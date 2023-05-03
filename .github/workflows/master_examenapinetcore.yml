@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'ExamenApiNetCore'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9E153D82DDE64BF6B5E9F6D73A9C0955 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_00EE78FC025742218341A0122FF948A5 }}
           package: .
