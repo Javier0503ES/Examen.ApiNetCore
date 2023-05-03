@@ -6,10 +6,10 @@ namespace Examen.ApiNetCore.SqlDbContext
     public class ExamenDbContext : DbContext
     {
         public DbSet<Usuario> TblUsuarios { get; set; }
-        //public DbSet<Bitacora> TblBitacora { get; set; }
-        //public DbSet<Entities.DbEntities.Examen> TblExamenes { get; set; }
-        //public DbSet<Pregunta> TblPreguntas { get; set; }
-        //public DbSet<Respuesta> TblRespuestas { get; set; }
+        public DbSet<Bitacora> TblBitacora { get; set; }
+        public DbSet<Exam> TblExamenes { get; set; }
+        public DbSet<Pregunta> TblPreguntas { get; set; }
+        public DbSet<Respuesta> TblRespuestas { get; set; }
 
         public ExamenDbContext()
         {
