@@ -43,6 +43,7 @@ app.MapGet("/api/GetUserById", async (int Id, ExamenDbContext dbContext) =>
 	Usuario user = await dbContext.TblUsuarios.Where(q => q.Id.Equals(Id)).FirstOrDefaultAsync();
 	return user != null ? Results.Ok(user) : Results.NotFound();
 }).Produces<Usuario>();
+
 app.MapPost("/api/AddUser", async (Usuario usuario, ExamenDbContext dbContext) =>
 {
 	dbContext.TblUsuarios.Add(new Usuario
@@ -70,8 +71,6 @@ app.MapPost("/api/DeleteUser", async (int id, ExamenDbContext dbContext) =>
 	await dbContext.SaveChangesAsync();
 	return Results.Ok();
 }).Produces(StatusCodes.Status200OK);
-
-
 #endregion
 
 app.MapGet("/api/GetExamen", async (int idUser, ExamenDbContext dbContext) =>
