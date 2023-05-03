@@ -24,13 +24,25 @@ app.MapGet("/api/GetUserValid", async (string userName, string password, ExamenD
 	{
 		return Results.NotFound();
 	}
+	string userUper = userName.ToUpper();
+    string passUper = password.ToUpper();
 
-	Usuario user = await dbContext.TblUsuarios.Where(q => q.Login.ToUpper().Equals(userName.ToUpper(), StringComparison.Ordinal)
-													   && q.Password.ToUpper().Equals(password.ToUpper(), StringComparison.Ordinal)
+
+    Usuario user = await dbContext.TblUsuarios.Where(q => q.Login.ToUpper().Equals(userUper)
+													   && q.Password.ToUpper().Equals(passUper)
 												&& q.Activo.Equals(true)).FirstOrDefaultAsync();
 	return user != null ? Results.Ok(user) : Results.NotFound();
 }).Produces<Usuario>();
 
+app.MapGet("/api/GetUserById", async (int Id, ExamenDbContext dbContext) =>
+{
+	if (dbContext == null)
+	{
+		return Results.NotFound();
+	}
+	Usuario user = await dbContext.TblUsuarios.Where(q => q.Id.Equals(Id)).FirstOrDefaultAsync();
+	return user != null ? Results.Ok(user) : Results.NotFound();
+}).Produces<Usuario>();
 app.MapPost("/api/AddUser", async (Usuario usuario, ExamenDbContext dbContext) =>
 {
 	dbContext.TblUsuarios.Add(new Usuario
@@ -62,8 +74,6 @@ app.MapPost("/api/DeleteUser", async (int id, ExamenDbContext dbContext) =>
 
 #endregion
 
-
-
 app.MapGet("/api/GetExamen", async (int idUser, ExamenDbContext dbContext) =>
 {
 	var x = await dbContext.TblUsuarios.ToListAsync();
@@ -71,7 +81,6 @@ app.MapGet("/api/GetExamen", async (int idUser, ExamenDbContext dbContext) =>
 	return Results.Ok(x);
 }).Produces<IEnumerable<Usuario>>();
 
-//record BitarocaModel(int idUsuario, int accion,string descripcion );
 app.MapPost("/api/AddItemBitacora", async ([FromBody]Bitacora bitacora, ExamenDbContext dbContext) =>
 {
 	try
@@ -93,6 +102,7 @@ app.MapPost("/api/AddItemBitacora", async ([FromBody]Bitacora bitacora, ExamenDb
 	
 	return Results.Ok();
 }).Produces(StatusCodes.Status200OK);
+
 
 app.Run();
 
