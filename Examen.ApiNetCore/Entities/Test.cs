@@ -5,7 +5,6 @@
         public int IdUser { get; set; }
         public string Nombre { get; set; }
         public string ApPaterno { get; set; }
-
         public int IdExamen { get; set; }
         public int NumPreguntas { get; set; }
         public string Preguntas { get; set; }
