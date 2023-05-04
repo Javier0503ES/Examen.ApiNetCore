@@ -11,7 +11,6 @@ builder.Services.AddDbContext<ExamenDbContext>();
 var app = builder.Build();
 
 #region User
-
 app.MapGet("/api/GetUserList", async (ExamenDbContext dbContext) =>
 {
 	List<Usuario> List = await dbContext.TblUsuarios.ToListAsync();
@@ -44,7 +43,7 @@ app.MapGet("/api/GetUserById", async (int Id, ExamenDbContext dbContext) =>
 	return user != null ? Results.Ok(user) : Results.NotFound();
 }).Produces<Usuario>();
 
-app.MapPost("/api/AddUser", async (Usuario usuario, ExamenDbContext dbContext) =>
+app.MapPost("/api/AddUser", async ([FromBody] Usuario usuario, ExamenDbContext dbContext) =>
 {
 	dbContext.TblUsuarios.Add(new Usuario
 	{
@@ -60,7 +59,25 @@ app.MapPost("/api/AddUser", async (Usuario usuario, ExamenDbContext dbContext) =
 	return Results.Ok();
 }).Produces(StatusCodes.Status200OK);
 
-app.MapPost("/api/DeleteUser", async (int id, ExamenDbContext dbContext) =>
+app.MapPost("/api/UpdateUser", async ([FromBody] Usuario user, ExamenDbContext dbContext) =>
+{
+	var u = dbContext.TblUsuarios.Where(q => q.Id.Equals(user.Id)).FirstOrDefault();
+	if (u == null)
+	{
+		return Results.NotFound();
+	}
+	u.Nombre = user.Nombre;
+	u.ApPaterno = user.ApPaterno;
+	u.ApMaterno = user.ApMaterno;
+	u.Activo = user.Activo;
+	u.Login = user.Login;
+	u.Password = user.Password;
+
+    await dbContext.SaveChangesAsync();
+    return Results.Ok();
+}).Produces(StatusCodes.Status200OK);
+
+app.MapGet("/api/DeleteUser", async (int id, ExamenDbContext dbContext) =>
 {
 	var u = dbContext.TblUsuarios.Where(q => q.Id.Equals(id)).FirstOrDefault();
 	if (u == null)
@@ -101,6 +118,15 @@ app.MapPost("/api/AddItemBitacora", async ([FromBody]Bitacora bitacora, ExamenDb
 	
 	return Results.Ok();
 }).Produces(StatusCodes.Status200OK);
+
+
+app.MapGet("/api/GetExamenes", async ( int Id, ExamenDbContext dbContext) =>
+{
+	var response = dbContext.ExamUser.Where(q => q.IdUser.Equals(Id)).ToList();
+    return response?? new List<Test>();
+
+}).Produces<List<Usuario>>();
+
 
 
 app.Run();
