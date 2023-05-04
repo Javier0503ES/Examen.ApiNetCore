@@ -19,8 +19,8 @@ namespace Examen.ApiNetCore.SqlDbContext
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=examenandradescompany.database.windows.net,1433;Database=ExamenDb ;User Id=UserDbExamen; Password=Ex@men1234;");
-
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Test>(entity =>
